@@ -1,6 +1,6 @@
 # capacitor-keyboard-language
 
-Capacitor plugin for detect current keyboard language
+Capacitor plugin for detecting the current keyboard language.
 
 ## Install
 
@@ -11,27 +11,39 @@ npx cap sync
 
 ## API
 
-<docgen-index>
+#### Methods:
 
-* [`echo(...)`](#echo)
+- `getKeyboardLanguage`: Returns the current keyboard language.
+- `addListener(eventName: 'keyboardLanguageChange', listenerFunc: (info: { language: string }) => void)`: Adds a listener for keyboard language changes.
+- `removeAllListeners`: Removes all listeners.
 
-</docgen-index>
+### Example usage in an Ionic Angular application:
 
-<docgen-api>
-<!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
-
-### echo(...)
 
 ```typescript
-echo(options: { value: string; }) => Promise<{ value: string; }>
+import { Component } from '@angular/core';
+import { KeyboardLanguage } from 'capacitor-keyboard-language';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  templateUrl: './example.component.html',
+  styleUrls: ['./example.component.css'],
+  providers: [KeyboardLanguage],
+})
+export class ExampleComponent {
+  constructor(private plugin: KeyboardLanguage) {}
+
+  ngOnInit() {
+    this.getKeyboardLanguage();
+    this.plugin.addListener('keyboardLanguageChange', ({ language }) => {
+      console.log('Keyboard language changed to: ', language);
+    });
+  }
+
+  async getKeyboardLanguage() {
+    const language = await this.plugin.getKeyboardLanguage();
+    console.log('Current keyboard language: ', language);
+  }
+}
 ```
-
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
-
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
-
---------------------
-
-</docgen-api>
